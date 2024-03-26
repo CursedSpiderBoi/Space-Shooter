@@ -1,10 +1,14 @@
-[gd_scene load_steps=10 format=3 uid="uid://cr7cj5x3sgiiw"]
+[gd_scene load_steps=14 format=3 uid="uid://cr7cj5x3sgiiw"]
 
+[ext_resource type="Script" path="res://player_ship/ship.gd" id="1_6fv12"]
 [ext_resource type="Texture2D" uid="uid://dg85bxrc25uug" path="res://assets/ship.png" id="1_ghotx"]
 [ext_resource type="Script" path="res://components/move_component.gd" id="2_cor1c"]
 [ext_resource type="Script" path="res://components/move_input_component.gd" id="3_dpe1j"]
 [ext_resource type="Resource" uid="uid://4plg1bh0ta2v" path="res://player_ship/ship_move_stats.tres" id="4_ml0jc"]
 [ext_resource type="Script" path="res://components/position_clamp_component.gd" id="5_3ytbj"]
+[ext_resource type="Script" path="res://components/spawner_component.gd" id="7_fjegg"]
+[ext_resource type="PackedScene" uid="uid://38m17c1j6qyp" path="res://projectiles/laser.tscn" id="8_8443d"]
+[ext_resource type="Script" path="res://components/scale_component.gd" id="9_5476i"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_we57x"]
 atlas = ExtResource("1_ghotx")
@@ -46,6 +50,7 @@ animations = [{
 }]
 
 [node name="ship" type="Node2D"]
+script = ExtResource("1_6fv12")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_eeuwc")
@@ -63,3 +68,24 @@ move_component = NodePath("../MoveComponent")
 [node name="PositionClampComponent" type="Node2D" parent="." node_paths=PackedStringArray("actor")]
 script = ExtResource("5_3ytbj")
 actor = NodePath("..")
+
+[node name="MarkerCenter" type="Marker2D" parent="."]
+position = Vector2(0, -7)
+
+[node name="MarkerLeft" type="Marker2D" parent="."]
+position = Vector2(-5, -4)
+
+[node name="MarkerRight" type="Marker2D" parent="."]
+position = Vector2(5, -4)
+
+[node name="SpawnerComponent" type="Node2D" parent="."]
+script = ExtResource("7_fjegg")
+scene = ExtResource("8_8443d")
+
+[node name="FireRateTimer" type="Timer" parent="."]
+wait_time = 0.4
+autostart = true
+
+[node name="ScaleComponent" type="Node" parent="." node_paths=PackedStringArray("sprite")]
+script = ExtResource("9_5476i")
+sprite = NodePath("..")
